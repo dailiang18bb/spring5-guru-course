@@ -11,4 +11,4 @@ This repo serve as a playground to follow along the Spring5-guru course on Udemy
  - spring-pet-clinic-charles
  - spring5-jokes-app-charles
  - dependency-injection-app
-
+ - spring5-di-demo
