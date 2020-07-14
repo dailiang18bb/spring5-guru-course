@@ -12,3 +12,4 @@ This repo serve as a playground to follow along the Spring5-guru course on Udemy
  - spring5-jokes-app-charles
  - dependency-injection-app
  - spring5-di-demo
+ - spring5-recipe-app => Spring MVC
