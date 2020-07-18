@@ -7,9 +7,9 @@ This repo serve as a playground to follow along the Spring5-guru course on Udemy
 
 
 ## Projects
- - spring5webapp
- - spring-pet-clinic-charles
- - spring5-jokes-app-charles
- - dependency-injection-app
- - spring5-di-demo
- - spring5-recipe-app => Spring MVC
+ - [spring5webapp](https://github.com/dailiang18bb/spring5webapp)
+ - [spring-pet-clinic-charles](https://github.com/dailiang18bb/spring-pet-clinic-charles)
+ - [spring5-jokes-app-charles](https://github.com/dailiang18bb/spring5-jokes-app-charles)
+ - [dependency-injection-app](https://github.com/dailiang18bb/dependency-injection-app)
+ - [spring5-di-demo](https://github.com/dailiang18bb/spring5-di-demo)
+ - [spring5-recipe-app](https://github.com/dailiang18bb/spring5-recipe-app) => Spring MVC 
