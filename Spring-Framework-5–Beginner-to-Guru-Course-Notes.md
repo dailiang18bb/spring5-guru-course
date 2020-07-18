@@ -19,7 +19,6 @@ Start Date: 06/29/2020
 
 
 ## Course Content
----
 ### Building a Spring Boot Web App
 #### Spring initializr
 save a lot works on congiure and wire the dependency of spring applications
@@ -221,8 +220,92 @@ Client request => dispatcher servlet => controller => service => data
  - Websocket - Scopes a single bean definition to the lifecycle of a WebSocket. Only valid in the context of a web-aware Spring ApplicationContext.
  - Use `@Scope` annotation or XML attribute of bean tag.
 
+### External Source Configuration
+ - Create Configuration class, annotate with `@PropertySource("classpath:xxxxxxxxxxxx")`
+ - Do the `@Value` annotation with properties
+ - Can use mutiple property files by `@PropertySources({@PropertySource(xxx), @PropertySource(xxx)})`
+ - Can put all custom properties into `application.properties` file, it will get picked up by Springboot.
+ - Can use YAML instead. Spring will auto pick up `application.yml` inside resource folder.
+ - Pay attention to Spring Boot Externalized Configuration Hierarchy
+ - properties with profile. `application-de.properties`
+
+### Spring OS Environment Properties
+ - Works on very OS
+ - Common use when dev phase change to QA phase
+ - if don't want to store password or something in the code, you can store it into system environment and pull it using Spring.
+ - Add environment property by naming convention `charles.username` => `CHARLES_USERNAME`
+ - use `Environment.getProperty("ENV_USERNAME")`
+
+
+## Spring MVC
+### Thymeleaf
+ - Thymeleaf is a Java template engine, producing XML, XHTML, and HTML5. Take a template convert into HTML.
+ - Thymeleaf is a replacement for JSP.
+ - Thymeleaf is a "Natural" template engine. Thymeleaf templates are valid HTML documents you can view in the browser. Speeds development time. biggest different vs JSP.
+ - [Performance] Thymeleaf is typically slower than JSP, Freemarker, Velocity(no longer support in Spring5)
+ - [Performance] Thymeleaf 3.0 bring significant performance improvements. Beware of old benchmark data(slow).
+
+### HTTP
+ - Hypertext Transfer Protocol(HTTP)
+ - [HTTP/0.9] Started as a `telnet` friendly protocol.
+ - [HTTP/1.0] From 1991 to 1995, when web browser emerged.
+ - [HTTP/1.1] Released in 1997, still using today. Added encoding, charset, and cookies
+ - [HTTP/2.0] Standardized in 2015, improve page load speed by lower Latency, and higher throughput.
+
+
+### HTTP Request
+ - Most popular 4 methods: Get, Post, Put, Delete
+ - [Get] Read. Safe. Idempotent
+ - [Post] Create. Unsafe. NOT Idempotent(repetition of actions affect outcomes)
+ - [Put] Update. Unsafe. Idempotent
+ - [Delete] Delete. Unsafe. Idempotent
+
+
+### Spring Boot Developer Tool
+ - Auto restart, when classes changed.
+ -
+
+
+## Spring JPA and Hibernate
+
+### Spring JPA Entity Relationships
+- One to One, `@OneToOne`
+- One to Many, `@OneToMany`
+- Many to One, `@ManyToOne`
+- Many to Many, `@ManyToMany`, use of a join table
+- Unidirectional, mapping is one-way, only one side know the other.
+- Bidirectional, mapping is two-way, both side know each other. Preferred.
+
+### Clob vs Blob
+ - `@Lob`, stands for Large Object
+
+
+> `@JoinTable` can customize the table and column name, not required to achieve just One Join Table. Use `mappedBy`
+
+
+### Primary Key and Foreign Key
+ - Primary Key
+  - PK is the **unique identifier** in a table.
+  - Cannot be null.
+  - A table can only have one Primary Key, this primary key can consist of single or multiple columns(Composite Primary Key),
+  - e.g. Composite Primary Key, `CONSTRAINT PK_Person PRIMARY KEY (ID,LastName)`. There is only ONE PRIMARY KEY (PK_Person). However, the VALUE of the primary key is made up of TWO COLUMNS (ID + LastName).
+ - Foreign Key
+  - A FK is the same as a PK, but just located in a **foreign place**.
+  - Foreign Key can be repeated in a table.
+  - Can be multiple foreign keys in one entity.
+
+
 
 ### Q&A
 1. Why do we need BaseEntity?
  - You don't have to add id property for every class just extend it and you have a id property for your class. Reduces writing boiler plate code.
  - Also, what if you want to change the ID generation strategy? Instead of modifying each entity, you now can update only BaseEntity.
+
+
+2. Why use Long(Object) over long(primitive) on ID property?
+ - We recommend that you declare consistently-named identifier properties on persistent classes and that you use a nullable (i.e., non-primitive) type
+
+3. Database relationships， one to one , one to many, many to many?
+
+4. Java JPA mappedBy(Owning), cascade?
+ - MappedBy signals hibernate that the key for the relationship is on the other side.
