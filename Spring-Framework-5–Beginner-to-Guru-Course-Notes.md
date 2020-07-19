@@ -269,18 +269,29 @@ Client request => dispatcher servlet => controller => service => data
 ## Spring JPA and Hibernate
 
 ### Spring JPA Entity Relationships
+- Cardinality, think of one entity can have min and max number of other entity.
 - One to One, `@OneToOne`
 - One to Many, `@OneToMany`
 - Many to One, `@ManyToOne`
 - Many to Many, `@ManyToMany`, use of a join table
 - Unidirectional, mapping is one-way, only one side know the other.
 - Bidirectional, mapping is two-way, both side know each other. Preferred.
+- `@JoinTable` can customize the table and column name, not required to achieve just One Join Table. Use `mappedBy`
 
 ### Clob vs Blob
  - `@Lob`, stands for Large Object
 
+### Cascade
+ - Cascade Types control how changes are cascaded from parent objects to children objects.
+ - Default cascade type is **None**.
+ - Cascade types,
+  - ALL,
+  - PERSIST,
+  - MERGE,
+  - REMOVE,
+  - REFRESH,
+  - DETACH;
 
-> `@JoinTable` can customize the table and column name, not required to achieve just One Join Table. Use `mappedBy`
 
 
 ### Primary Key and Foreign Key
@@ -294,6 +305,21 @@ Client request => dispatcher servlet => controller => service => data
   - Foreign Key can be repeated in a table.
   - Can be multiple foreign keys in one entity.
 
+### Hibernate DDL auto
+ - **DDL**, Data Definition Language, define the database schema, structures, commands: CREATE, DROP, RENAME and ALTER.
+ - **DML**, Data Manipulation Language, deals with the manipulation of data, commands: INSERT, UPDATE and DELETE.
+ - `spring.jpa.hibernate.ddl-auto` controls what if any DDL operations Hibernate will perform on startup. property value could be, `None, Validate, update, create, create-drop`
+ - Initialize with Hibernate, load from `import.sql` at root classpath.
+ - Initialize with Spring JDBC, load from `schema.sql` and `data.sql`
+
+### Spring Data JPA Query Method
+ - [official docs](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods)
+ - No need to write sql, just write java method to retrieve data.
+
+
+
+### Notes
+- Methods return type, is a good practice to return the updated object.
 
 
 ### Q&A
@@ -305,7 +331,14 @@ Client request => dispatcher servlet => controller => service => data
 2. Why use Long(Object) over long(primitive) on ID property?
  - We recommend that you declare consistently-named identifier properties on persistent classes and that you use a nullable (i.e., non-primitive) type
 
-3. Database relationships， one to one , one to many, many to many?
 
-4. Java JPA mappedBy(Owning), cascade?
+3. Java JPA mappedBy(Owning)?
  - MappedBy signals hibernate that the key for the relationship is on the other side.
+
+
+4. Why does a method return a object the same as the argument object?
+ - The method returns the updated object, which is typically a good practice.
+
+
+### Check out Later
+ - Note: Make sure you brush up on the Java SE 8 lambdas and method references syntax [Java 8: Lambdas](https://www.oracle.com/technical-resources/articles/java/architect-lambdas-part1.html) as well as its stream pipelining concepts (see "Processing Data with Java SE 8 Streams").
