@@ -50,6 +50,7 @@ spring.datasource.data-username=sa
 
 #### MVC and Spring MVC
 - MVC => Model, View, Controller, common web design pattern.
+- Controller => Service => Repository => Data
 - Spring MVC =>
 ```
                         handler mapping
@@ -167,6 +168,7 @@ Client request => dispatcher servlet => controller => service => data
 
 #### Spring Profile
 - Profiles are a core feature of the framework – allowing us to map our beans to different profiles – for example, dev, test, prod.
+- when you set a profile, but you don't activate this profile, the spring context will ignore it.
 
 #### Bean lifecycle
 
@@ -195,6 +197,7 @@ Client request => dispatcher servlet => controller => service => data
  - `@RestController`, extends @Controller, add @ResponseBody
  - `@Repository`, a mechanism for encapsulating storage, retrieval and search behavior
  - `@Service`, managing the controller with data, repository inject into service, service inject into controller.
+ - `@Repository` is not mandatory because when your interface extends one of the built-in repository interfaces, Spring knows that your interface is meant to be a repository, and therefore would create the implementation for you at runtime.
 
 ### Spring Component Scan
  - Will Scan Spring Stereotypes annotations.
@@ -270,6 +273,7 @@ Client request => dispatcher servlet => controller => service => data
 
 ### Spring JPA Entity Relationships
 - Cardinality, think of one entity can have min and max number of other entity.
+- e.g. A Vet can have many Speciality. A Speciality can have many Vets. So its a many-to-many relationship.
 - One to One, `@OneToOne`
 - One to Many, `@OneToMany`
 - Many to One, `@ManyToOne`
@@ -278,6 +282,10 @@ Client request => dispatcher servlet => controller => service => data
 - Bidirectional, mapping is two-way, both side know each other. Preferred.
 - `@JoinTable` can customize the table and column name, not required to achieve just One Join Table. Use `mappedBy`
 
+### mappedBy
+ - Unidirectional don't need to set `mappedBy`, however Bidirectional must set `mappedBy` to avoid both sides establishing foreign key.
+ - Only `OneToOne`,`OneToMany`,`ManyToMany` have mappedBy property. **Not** in `ManyToOne`
+ - Relationship usually maintained by the **MANY** side. e.g. Pet-Visits(OneToMany), @JoinColumn(name = "pet_id") inside Visit.class
 ### Clob vs Blob
  - `@Lob`, stands for Large Object
 
@@ -318,8 +326,15 @@ Client request => dispatcher servlet => controller => service => data
 
 
 
+
+
+
 ### Notes
 - Methods return type, is a good practice to return the updated object.
+
+- `@MappedSuperclass` can prevent the base entity store into database.
+
+- Method marked with `@Transactional` means that all the code will be executed as one, or none will be executed if runtime exception occurs. For example if have a method in your service that takes money from bank account A and then adds it to bank account B, and after taking it from account A some runtime exception occurs (for example nullpointer) - you want everything rolled back (otherwise money from account A would be lost). Also JPA requires code like updating entity to run inside of transaction.
 
 
 ### Q&A
@@ -338,6 +353,16 @@ Client request => dispatcher servlet => controller => service => data
 
 4. Why does a method return a object the same as the argument object?
  - The method returns the updated object, which is typically a good practice.
+
+
+5. What is the difference between CrudService and CrudRepository interfaces we used?
+ - **CrudService** is project specific that we created. We are providing implementations of the methods defined. This interface is defined in the service layer.
+ - On the other hand **org.springframework.data.repository.CrudRepository** is part of Spring Data JPA. When the application starts, Spring generates implementations of the defined methods. This interface is defined in the repository layer.
+
+
+6. Why do we abstractify data storage (jpa vs map) in the service layer rather than the repository layer?
+ - The repository layer is supposed to contain code which is handling actual persistence, by integrating with some kind of database, filesystem or network for storage. The implementation details for those must be known only within this layer. In addition, you'll want the repository classes to be very simple, providing very basic operations to and from the storage, possibly using some kind of driver/connection library. Complex handling and combined operations, should be implemented within the service layer. The line is thin here, so think carefully while separating the logic! In addition, a single repository must handle entities of a single type, while a service for an entity may need to handle more than one type (e.g. the owner service needs to also handle pets).
+
 
 
 ### Check out Later
